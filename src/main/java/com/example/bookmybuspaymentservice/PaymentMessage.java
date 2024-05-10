@@ -1,9 +1,10 @@
 package com.example.bookmybuspaymentservice;
 
-public class BookingMessage {
 
+public class PaymentMessage {
     private String bookingId;
     private String busId;
+    private String paymentId;
     private int noOfSeats;
 
     public String getBookingId() {
@@ -21,6 +22,15 @@ public class BookingMessage {
     public void setBusId(String busId) {
         this.busId = busId;
     }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
+
 
     public int getNoOfSeats() {
         return noOfSeats;

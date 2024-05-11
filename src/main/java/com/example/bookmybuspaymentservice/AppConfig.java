@@ -10,9 +10,17 @@ public class AppConfig {
     @Value("${kafka.payment.topic.name}")
     String topicname;
 
+    @Value("${kafka.payment.failure.topic.name}")
+    String paymentFailureTopicName;
+
     @Bean("payment_kafka_topic")
     String getBookingKafkaTopic() {
         return topicname;
+    }
+
+    @Bean("payment_failure_kafka_topic")
+    String getPaymentFailureKafkaTopic() {
+        return paymentFailureTopicName;
     }
 
 }

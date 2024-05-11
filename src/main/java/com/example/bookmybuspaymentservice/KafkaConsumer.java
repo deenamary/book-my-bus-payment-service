@@ -2,6 +2,7 @@ package com.example.bookmybuspaymentservice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -66,8 +67,15 @@ public class KafkaConsumer {
             logger.error("Exception occurred while processing payment{}. Exception details : {}",message, e.getMessage());
             kafkaProducer.sendMessage(paymentFailureKafkaTopic, bookingMessage.getBookingId());
         }
+    }
 
-
-
+    @Transactional
+    @KafkaListener(topics = "book-my-bus-inventory-update-failure-topic", groupId = "console-consumer-68654")
+    public void consumeInventoryUpdateFailureMessage(String message) throws JsonProcessingException {
+        logger.info("Received message: " + message);
+        String bookingId = message;
+        paymentRepository.deleteAllByBookingId(bookingId);
+        logger.info("Deleted payment");
+        kafkaProducer.sendMessage(paymentFailureKafkaTopic,bookingId);
     }
 }
